@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>1234567890_Adinda_Percobaan10</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 125vh;
+        margin: 0;
+    }
+
+    .calculator {
+        border: 1px solid #ccc;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .display {
+        background-color: #222;
+        color: white;
+        font-size: 40px;
+        text-align: right;
+        padding: 15px 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        height: 60px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 70px);
+        grid-template-rows: repeat(5, 70px); 
+        gap: 10px;
+    }
+
+    .grid button {
+        font-size: 22px;
+        border: none;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        color: black;
+    }
+
+    .grid button.zero {
+        grid-column: 1 / span 1;
+    }
+
+    .grid button.operator {
+        background-color: #e0e0e0;
+        font-weight: bold;
+    }
+
+    .grid button.operator:hover {
+        background-color: #d5d5d5;
+    }
+
+    .grid button.equals {
+        grid-column: 4;
+        grid-row: 2 / 6;
+        background-color: #3498db;
+        color: white;
+        font-weight: bold;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        height: 100%;
+    }
+    .grid button.equals:hover {
+        background-color: #2980b9;
+    }
+
+    .grid button.clear {
+        background-color: #f87171;
+        color: white;
+        font-weight: bold;
+    }
+
+    .grid button.clear:hover {
+        background-color: #e11d48;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+  <div id="display" class="display">0</div>
+  <div class="grid">
+    <button class="operator" onclick="inputOperator('+')">+</button>
+    <button class="operator" onclick="inputOperator('-')">-</button>
+    <button class="operator" onclick="inputOperator('*')">×</button>
+    <button class="operator" onclick="inputOperator('/')">÷</button>
+
+    <button onclick="inputNumber('7')">7</button>
+    <button onclick="inputNumber('8')">8</button>
+    <button onclick="inputNumber('9')">9</button>
+    <button class="equals" onclick="hitung()">=</button>
+
+    <button onclick="inputNumber('4')">4</button>
+    <button onclick="inputNumber('5')">5</button>
+    <button onclick="inputNumber('6')">6</button>
+
+    <button onclick="inputNumber('1')">1</button>
+    <button onclick="inputNumber('2')">2</button>
+    <button onclick="inputNumber('3')">3</button>
+
+    <button onclick="inputNumber('0')">0</button>
+    <button onclick="inputDot()">.</button>
+    <button class="clear" onclick="clearDisplay()">AC</button>
+  </div>
+</div>
+
+<script>
+  let display = document.getElementById("display");
+  let currentInput = "";
+  
+  function updateDisplay() {
+    display.textContent = currentInput || "0";
+  }
+  
+  function inputNumber(num) {
+    currentInput += num;
+    updateDisplay();
+  }
+  
+  function inputDot() {
+    let parts = currentInput.split(/[\+\-\*\/]/);
+    let lastNumber = parts[parts.length -1];
+    if (!lastNumber.includes(".")) {
+      currentInput += ".";
+      updateDisplay();
+    }
+  }
+  
+  function inputOperator(op) {
+    if (currentInput === "") return; 
+    if (/[+\-\*\/]$/.test(currentInput)) {
+      currentInput = currentInput.slice(0, -1) + op;
+    } else {
+      currentInput += op;
+    }
+    updateDisplay();
+  }
+  
+  function hitung() {
+    try {
+      let ekspresi = currentInput.replace(/×/g, "*").replace(/÷/g, "/");
+      let hasil = eval(ekspresi);
+      currentInput = hasil.toString();
+    } catch {
+      currentInput = "Error";
+    }
+    updateDisplay();
+  }
+  
+  function clearDisplay() {
+    currentInput = "";
+    updateDisplay();
+  }
+
+  updateDisplay();
+</script>
+
+</body>
+</html>
